@@ -14,9 +14,15 @@ class RingBuffer:
                 self.storage.add_to_head(item)
                 self.current = self.storage.head
             else:
-                self.storage.delete(self.current.next)
-                self.current.insert_after(item)
-                self.current = self.current.next
+                node_to_replace = self.current.next
+                if node_to_replace == self.storage.tail:
+                    self.storage.remove_from_tail()
+                    self.storage.add_to_tail(item)
+                    self.current = self.storage.tail
+                else:
+                    node_to_replace.delete()
+                    self.current.insert_after(item)
+                    self.current = self.current.next
 
         else:
             self.storage.add_to_tail(item)
